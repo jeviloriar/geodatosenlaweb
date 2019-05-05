@@ -1,0 +1,61 @@
+﻿html, body {
+  padding-left: 11em;
+  font-family: Verdana, sans-serif, Georgia, "Times New Roman",
+        Times, serif;
+  color: #191970;
+  background-color: "#ff0000"; 
+  height: 100%;
+  margin: 5;
+  padding: 0;
+}
+
+h1 {
+  font-family: Helvetica, Geneva, Arial,
+        SunSans-Regular, sans-serif; 
+		font-size: 40px;
+		
+}
+
+h2 {
+  font-family: Helvetica, Geneva, Arial,
+        SunSans-Regular, sans-serif; 
+		font-size: 20px;
+		
+}
+
+div {
+    margin: 10px 10px 10px 20px;
+	text-align: center;
+}
+
+#map, #pano, #datos{
+        float: left;
+        height:70%;
+        width: 30%;
+        margin-top: 20px;
+		margin-right: 10px;
+		margin-left: 10px;
+}
+
+ #datos {
+    box-shadow: rgb(150,150,150) 5px 5px 10px; 
+	text-align: left;
+}
+p {
+   margin-left: 10px;
+  font-family: Helvetica, Geneva, Arial,
+        SunSans-Regular, sans-serif; 
+  font-size: 20px;
+}
+#logo {
+   border:100px;
+   width:100px;
+   height:100px;
+}
+#FotoCarnet {
+   display:block;
+   margin:auto;
+   border:100px;
+   width:100px;
+   height:100px;
+}

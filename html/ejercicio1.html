@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title> EJERCIIO PRÁCTICO SIG WEB </title>
+    <meta name="author" content="Jorge Viloria" />
+    <meta name="description" content="curso SIG WEB" />
+    <meta charset="utf-8" /> 
+     <script src="../js/leaflet.js"></script>
+     <link rel="stylesheet" href="../css/leaflet.css">
+     <link rel="stylesheet" href="../css/estilo.css"> 
+  </head>
+  <body>
+    <img id="logo"src="../imagenes/aulasig.jpg" alt="logo">
+	<div id="titulo">
+       <p><h1>EJERCICIO PRÁCTICO SIG WEB</h1></p>
+       <p><h2>Aprendiendo HTML</h2></p>
+	</div>
+	<div id="datos">
+      <p> <h2>Datos Personales</h2></p>
+	  <p>Nombre: Jorge</p>
+	  <p>Apellido: Viloria</p>
+	  <p>Profesión: Msc en SIG</p>
+	  <p>Edad: 49 años</p>
+	  <p>Dirección: Ciudad Ojeda  Venezuela</p>
+	  <p>Ubicación Geográfica:</p>
+	  <p>Latitud: <strong>10.211966</strong> </p>
+	  <p>Longitud: <strong>-71.313521</strong></p>
+      <img id="FotoCarnet"src="../imagenes/carnet.jpg" alt="Foto">
+	  <a href="../index.html">Menú Principal</a>
+    </div>  
+    <div id="map"></div>
+    <div id="pano"></div>
+	<script>
+	   var mymap = L.map('map').setView([10.211966, -71.313521], 12);
+          L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		  center: [10.211966, -71.313521],
+		  maxZoom: 18, 
+		  id: 'mapbox.streets'
+	    }).addTo(mymap);
+	   L.marker([10.211966, -71.313521]).addTo(mymap).bindPopup("<b>¡Hola!</b> soy <b>Jorge</b><br/>mi dirección").openPopup();
+       var mymap = L.map('pano').setView([10.211966, -71.313521], 17);
+          L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		  maxZoom: 20, id: 'mapbox.streets'
+	    }).addTo(mymap);
+	   L.marker([10.211966, -71.313521]).addTo(mymap).bindPopup("<b>Residencias Canaima</b><br/>Apartamento 2").openPopup();
+	   L.circle([10.211966, -71.313521], 100, {
+		  color: 'red',
+		  fillColor: '#f03',
+		  fillOpacity: 0.25
+	    }).addTo(mymap).bindPopup("Área de Influencia");
+	   L.polygon([
+	     [10.2118248,-71.3132079],
+		 [10.2116205,-71.3135693],
+		 [10.2119402,-71.3137525],
+	     [10.2118545,-71.3139081],
+		 [10.2120401,-71.3140100],
+		 [10.2121408,-71.3138131],
+		 [10.2122959,-71.3138819],
+		 [10.2124594,-71.3135498],
+		 [10.2121637,-71.3133861]
+	  ]).addTo(mymap).bindPopup("Residencias Canaima");
+    </script>
+  </body>
+</html>
