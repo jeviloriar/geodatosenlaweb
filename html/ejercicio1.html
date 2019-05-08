@@ -14,7 +14,7 @@
   <body>
      <img id="logo"src="../imagenes/geoinnova.jpg" alt="logo">
 	 <h1>Tema 2: Estándares de Geodatos</h1>
-     <h2>Aprendiendo HTML 5 / CSS 3 con Leaflet </h2>
+     <h2>Aprendiendo HTML5 / CSS3 con Leaflet </h2>
 
 	 <!-- Datos personales del estudiante -->
 	 <div id="datos">
@@ -30,25 +30,25 @@
          <img id="FotoCarnet"src="../imagenes/carnet.jpg" alt="Foto">
          <a href="../index.html">Menú Principal</a>
       </div>
-	  <!-- Permite desplegar las dos ventanas de los mapas -->
+	  <!-- Desplegar las dos ventanas de los mapas -->
       <div id="map"></div>
       <div id="pano"></div>
       <script>
 	     <!-- Crea el mapa general -->
-	     var mymap = L.map('map').setView([10.211966, -71.313521], 12);
+	     var mapag = L.map('map').setView([10.211966, -71.313521], 12);
              L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		     center: [10.211966, -71.313521],
 		     maxZoom: 18, 
 		     id: 'mapbox.streets'
-	         }).addTo(mymap);
-	      L.marker([10.211966, -71.313521]).addTo(mymap).bindPopup("<b>¡Hola!</b> soy <b>Jorge</b><br/>mi dirección").openPopup();
+	         }).addTo(mapag);
+	      L.marker([10.211966, -71.313521]).addTo(mapag).bindPopup("<b>¡Hola!</b> soy <b>Jorge</b><br/>mi dirección").openPopup();
 		  
 		  <!-- Crea el mapa de detalle -->
-          var mymap = L.map('pano').setView([10.211966, -71.313521], 17);
-             L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 20, id: 'mapbox.streets'}).addTo(mymap);
-	      L.marker([10.211966, -71.313521]).addTo(mymap).bindPopup("<b>Residencias Canaima</b><br/>Apartamento 2").openPopup();
+          var mapad = L.map('pano').setView([10.211966, -71.313521], 18);
+             L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 20, id: 'mapbox.streets'}).addTo(mapad);
+	      L.marker([10.211966, -71.313521]).addTo(mapad).bindPopup("<b>Residencias Canaima</b><br/>Apartamento 2").openPopup();
 	      L.circle([10.211966, -71.313521], 100, {color: 'red', fillColor: '#f03', fillOpacity: 0.25
-	      }).addTo(mymap).bindPopup("Área de Influencia"); L.polygon([
+	      }).addTo(mapad).bindPopup("Área de Influencia"); L.polygon([
 	         [10.2118248,-71.3132079],
 		     [10.2116205,-71.3135693],
 		     [10.2119402,-71.3137525],
@@ -58,7 +58,7 @@
 		     [10.2122959,-71.3138819],
 		     [10.2124594,-71.3135498],
 		     [10.2121637,-71.3133861]
-	      ]).addTo(mymap).bindPopup("Residencias Canaima");
+	      ]).addTo(mapad).bindPopup("Residencias Canaima");
       </script>
     </body>
 </html>

@@ -7,14 +7,14 @@
      <meta name="description" content="Curso Geodatos en Aplicaciones Web" />
      <meta charset="utf-8" />
      <!-- Carga los archivos externos de estilo y la libreria de funciones js -->	 
-     <script src="../js/leaflet.js"></script>
-     <link rel="stylesheet" href="../css/leaflet.css">
+     <script src="../js/ol.js"></script>
+     <link rel="stylesheet" href="../css/ol.css">
      <link rel="stylesheet" href="../css/estilo.css"> 
   </head>
   <body>
      <img id="logo"src="../imagenes/geoinnova.jpg" alt="logo">
 	 <h1>Tema 2: Estándares de Geodatos</h1>
-     <h2>Aprendiendo HTML 5 / CSS 3 con OpenLayers </h2>
+     <h2>Aprendiendo HTML5 / CSS3 con OpenLayers </h2>
 	 
 	 <!-- Datos personales del estudiante -->
 	 <div id="datos">
@@ -30,35 +30,75 @@
          <img id="FotoCarnet"src="../imagenes/carnet.jpg" alt="Foto">
          <a href="../index.html">Menú Principal</a>
       </div>
-	  <!-- Permite desplegar las dos ventanas de los mapas -->
+	  <!-- Desplegar las dos ventanas de los mapas -->
       <div id="map"></div>
       <div id="pano"></div>
+
       <script>
-	     <!-- Crea el mapa general -->
-	     var mymap = L.map('map').setView([10.211966, -71.313521], 12);
-             L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		     center: [10.211966, -71.313521],
-		     maxZoom: 18, 
-		     id: 'mapbox.streets'
-	         }).addTo(mymap);
-	      L.marker([10.211966, -71.313521]).addTo(mymap).bindPopup("<b>¡Hola!</b> soy <b>Jorge</b><br/>mi dirección").openPopup();
-		  
-		  <!-- Crea el mapa de detalle -->
-          var mymap = L.map('pano').setView([10.211966, -71.313521], 17);
-             L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 20, id: 'mapbox.streets'}).addTo(mymap);
-	      L.marker([10.211966, -71.313521]).addTo(mymap).bindPopup("<b>Residencias Canaima</b><br/>Apartamento 2").openPopup();
-	      L.circle([10.211966, -71.313521], 100, {color: 'red', fillColor: '#f03', fillOpacity: 0.25
-	      }).addTo(mymap).bindPopup("Área de Influencia"); L.polygon([
-	         [10.2118248,-71.3132079],
-		     [10.2116205,-71.3135693],
-		     [10.2119402,-71.3137525],
-	         [10.2118545,-71.3139081],
-		     [10.2120401,-71.3140100],
-		     [10.2121408,-71.3138131],
-		     [10.2122959,-71.3138819],
-		     [10.2124594,-71.3135498],
-		     [10.2121637,-71.3133861]
-	      ]).addTo(mymap).bindPopup("Residencias Canaima");
-      </script>
+	  	 <!-- Variables de objetos del mapa -->
+	     var mbase = new ol.layer.Tile({source: new ol.source.OSM()});
+		 var iconFeature = new ol.Feature({
+             geometry: new ol.geom.Point(ol.proj.transform([-71.313521,10.211966], 'EPSG:4326', 'EPSG:3857')),
+             name: 'Null Island',
+             population: 4000,
+             rainfall: 500
+            });
+        var iconStyle = new ol.style.Style({
+             image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+             anchor: [0.5, 46],
+             anchorXUnits: 'fraction',
+             anchorYUnits: 'pixels',
+             opacity: 0.75,
+             src: '../imagenes/marker-icon.png'
+             }))
+        });
+		iconFeature.setStyle(iconStyle);
+        var vectorSource = new ol.source.Vector({
+             features: [iconFeature]
+        });
+        var vectorLayer = new ol.layer.Vector({
+             source: vectorSource
+        });
+
+        /* Dibuja un círculo rojo */
+            var features = [];
+            var circle = new ol.geom.Circle(ol.proj.transform([-71.313521,10.211966], 'EPSG:4326', 'EPSG:3857'), 100);
+            features.push(new ol.Feature({geometry: circle}));
+            var vectorSource = new ol.source.Vector({features: features});
+            var layer = new ol.layer.Vector({
+                     source: vectorSource,
+                     style: [
+                     new ol.style.Style({
+                     stroke: new ol.style.Stroke({
+                     color: 'red',
+                     width: 2
+                    }),
+                    fill: new ol.style.Fill({
+                         color: 'rgba(255, 0, 0, 0.25)'
+                    })
+                })]
+            });
+
+	  	<!-- Crea el mapa general -->
+            var mapag = new ol.Map({ 
+                     layers: [mbase, vectorLayer], 
+                     target: 'map', 
+                     view: new ol.View({ 
+		             center: ol.proj.transform([-71.313521,10.211966], 'EPSG:4326', 'EPSG:3857'), 
+                     zoom: 12}) 
+            });
+	
+	  	<!-- Crea el mapa de detalles -->
+		    var mapad = new ol.Map({ 
+                     layers: [mbase, vectorLayer, layer], 
+                     target: 'pano', 
+                     view: new ol.View({ 
+                     center: ol.proj.transform([-71.313521,10.211966], 'EPSG:4326', 'EPSG:3857'), 
+                     zoom: 17}) 
+            });
+			var popup = new ol.Overlay.Popup();
+            map.addOverlay(popup);
+
+        </script>
     </body>
 </html>
