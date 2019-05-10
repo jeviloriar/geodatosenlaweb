@@ -33,39 +33,43 @@
 	  <!-- Desplegar las dos ventanas de los mapas -->
       <div id="map"></div>
       <div id="pano"></div>
-
+	  
+	  <!-- Desplegar los dos popup -->
+      <div id="popup" class="ol-popup">Residencias Canaima Apartamento 2</div>
+      <div id="popup1" class="ol-popup"><b>¡Hola!</b> soy <b>Jorge</b><br/>mi dirección"</div>
+        
       <script>
-	  	 <!-- Variables de objetos del mapa -->
+	  	 //* Variables de objetos del mapa
+		 var myubicacion = ol.proj.transform([-71.313521,10.211966], 'EPSG:4326', 'EPSG:3857');
 	     var mbase = new ol.layer.Tile({source: new ol.source.OSM()});
-		 var iconFeature = new ol.Feature({
-             geometry: new ol.geom.Point(ol.proj.transform([-71.313521,10.211966], 'EPSG:4326', 'EPSG:3857')),
-             name: 'Null Island',
+		 
+		 //* Dibuja un pin de ubicación azul
+         var PinFeature = new ol.Feature({
+             geometry: new ol.geom.Point(myubicacion),
+             name: 'Mi ubicación',
              population: 4000,
              rainfall: 500
             });
-        var iconStyle = new ol.style.Style({
-             image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+         var PinStyle = new ol.style.Style({
+             image: new ol.style.Icon(({
              anchor: [0.5, 46],
              anchorXUnits: 'fraction',
              anchorYUnits: 'pixels',
              opacity: 0.75,
              src: '../imagenes/marker-icon.png'
              }))
-        });
-		iconFeature.setStyle(iconStyle);
-        var vectorSource = new ol.source.Vector({
-             features: [iconFeature]
-        });
-        var vectorLayer = new ol.layer.Vector({
-             source: vectorSource
-        });
-
-        /* Dibuja un círculo rojo */
+            });
+		    PinFeature.setStyle(PinStyle);	
+         var PinLayer = new ol.layer.Vector({
+                 source: new ol.source.Vector({features: [PinFeature]})
+            });
+		
+             //* Dibuja un círculo rojo de área de influencia
             var features = [];
             var circle = new ol.geom.Circle(ol.proj.transform([-71.313521,10.211966], 'EPSG:4326', 'EPSG:3857'), 100);
             features.push(new ol.Feature({geometry: circle}));
             var vectorSource = new ol.source.Vector({features: features});
-            var layer = new ol.layer.Vector({
+            var CirLayer = new ol.layer.Vector({
                      source: vectorSource,
                      style: [
                      new ol.style.Style({
@@ -78,27 +82,87 @@
                     })
                 })]
             });
+			
+		 //* Dibuja ventanas tipo popup 	
+	    var popup = new ol.Overlay ({
+         element: document.getElementById('popup'),
+		 autoPan: true,
+		 positioning: 'bottom-left',
+         stopEvent: false
+        }); 
+		var ubicacion = ol.proj.transform([-71.3135,10.2122], 'EPSG:4326', 'EPSG:3857');
+         popup.setPosition(ubicacion);
+	    
+		 //* popup1 	
+	    var popup1 = new ol.Overlay ({
+         element: document.getElementById('popup1'),
+		 autoPan: true,
+		 positioning: 'bottom-left',
+         stopEvent: false
+        }); 
+		var ubicacion2 = ol.proj.transform([-71.314,10.228], 'EPSG:4326', 'EPSG:3857');
+         popup1.setPosition(ubicacion2);
+		  
+         //* Dibujar poligono del urbanismo en el mapa 
+		var vertices = [
+		     [-71.3132079,10.2118248],
+		     [-71.3135693,10.2116205],
+		     [-71.3137525,10.2119402],
+	         [-71.3139081,10.2118545],
+		     [-71.3140100,10.2120401],
+		     [-71.3138131,10.2121408],
+		     [-71.3138819,10.2122959],
+		     [-71.3135498,10.2124594],
+		     [-71.3133861,10.2121637]
+			 ];
+        
+		//* Creamos el objeto poligono
+		var poligono = new ol.geom.Polygon([vertices]);
+	    poligono.transform('EPSG:4326', 'EPSG:3857');
+	   
+	   	//* Creamos el estilo para aplicar al poligono
+	   	var estilo = new ol.style.Style({
+         stroke: new ol.style.Stroke({
+         color: '#0000FF',
+         width: 2
+        }),
+         fill: new ol.style.Fill({
+          color: [0, 0, 250, .10]
+         })
+        });
+	      
+		 //* Creamos la Feature con el poligono 
+        var PolyFeature = new ol.Feature(poligono);
+		PolyFeature.setStyle(estilo);
 
-	  	<!-- Crea el mapa general -->
+         //* Creamos el vector source y le agregamos la feature
+        var PolyVector = new ol.source.Vector();
+        PolyVector.addFeature(PolyFeature);
+
+        //* Creamos el layer y le incorporamos el vector source.
+        var PolyLayer = new ol.layer.Vector({
+           source: PolyVector		  
+        });
+			
+	  	//* Crea el mapa general
             var mapag = new ol.Map({ 
-                     layers: [mbase, vectorLayer], 
+                     layers: [mbase, PinLayer], 
                      target: 'map', 
                      view: new ol.View({ 
-		             center: ol.proj.transform([-71.313521,10.211966], 'EPSG:4326', 'EPSG:3857'), 
-                     zoom: 12}) 
+		             center: myubicacion, 
+                     zoom: 12}),
+                     overlays: [popup1]					 
             });
 	
-	  	<!-- Crea el mapa de detalles -->
+	  	//* Crea el mapa de detalles
 		    var mapad = new ol.Map({ 
-                     layers: [mbase, vectorLayer, layer], 
+                     layers: [mbase, PinLayer, CirLayer, PolyLayer], 
                      target: 'pano', 
                      view: new ol.View({ 
-                     center: ol.proj.transform([-71.313521,10.211966], 'EPSG:4326', 'EPSG:3857'), 
-                     zoom: 18}) 
+                     center: myubicacion, 
+                     zoom: 18}),
+					 overlays: [popup]
             });
-			var popup = new ol.Overlay.Popup();
-            map.addOverlay(popup);
-
         </script>
     </body>
 </html>

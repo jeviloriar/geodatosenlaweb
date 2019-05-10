@@ -96,6 +96,15 @@ li a:hover:not(.active) {
 		box-shadow: #969696 5px 5px 5px 5px ; 
 }
 
+#bio{
+        float: left;
+        height:80%;
+        width: 80%;
+        margin-top: 5px;
+		margin-right: 10px;
+		margin-left: 10px;
+		box-shadow: #969696 5px 5px 5px 5px ; 
+}
 #logo {
    width:220px;
    height:140px;
@@ -113,3 +122,45 @@ li a:hover:not(.active) {
    display:block;
    margin:auto;
 }
+
+.ol-popup {
+  position: absolute;
+  background-color: white;
+  -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #cccccc;
+  bottom: 12px;
+  left: -50px;
+  min-width: 120px;
+  font-size: 10px;
+}
+.ol-popup:after, .ol-popup:before {
+  top: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.ol-popup:after {
+  border-top-color: white;
+  border-width: 10px;
+  left: 48px;
+  margin-left: -10px;
+}
+.ol-popup:before {
+  border-top-color: #cccccc;
+  border-width: 11px;
+  left: 48px;
+  margin-left: -11px;
+}
+
+
+
+
+
+
+
